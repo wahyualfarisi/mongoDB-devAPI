@@ -23,6 +23,45 @@ app.post('/profile', (req, res) => {
   })
 })
 
+app.get('/profile', (req, res) => {
+  Profile.find().then( (doc) => {
+    res.send({doc})
+  }, (e) => {
+    res.status(400).send()
+  })
+})
+
+app.get('/profile/:id', (req, res) => {
+  var id = req.params.id;
+
+  Profile.findById(id).then( (doc) => {
+    if(!doc){
+      return res.status(400).send()
+    }
+    res.send(doc)
+  }, (e) => {
+    res.status(400).send()
+  })
+})
+
+app.delete('/profile/:id', (req, res) => {
+  var id = req.params.id;
+
+  if(!ObjectID.isValid(id) ){
+    return res.status(400).send()
+  }
+
+  Profile.findByIdAndDelete(id).then( (doc) => {
+    if(!doc){
+      return res.status(400).send()
+    }
+
+    res.send(doc)
+  }, (e) => {
+    res.status(400).send()
+  })
+})
+
 
 
 
